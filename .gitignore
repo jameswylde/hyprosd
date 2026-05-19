@@ -1,0 +1,8 @@
+/target
+**/*.rs.bk
+/.idea
+/.vscode
+.env
+/aur/*
+!/aur/PKGBUILD
+!/aur/.SRCINFO
