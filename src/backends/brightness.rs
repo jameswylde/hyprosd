@@ -46,7 +46,7 @@ fn watch_brightness(
 
     // send the initial value so `show current` has state before the first change
     if let Some(level) = read_brightness_percent(&brightness_path, &max_path) {
-        let _ = sender.send_blocking(AppMessage::Event(OsdEvent::Brightness { level }));
+        let _ = sender.send_blocking(AppMessage::State(OsdEvent::Brightness { level }));
     }
 
     loop {

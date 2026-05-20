@@ -56,12 +56,12 @@ fn watch_locks(sender: async_channel::Sender<AppMessage>) -> anyhow::Result<()> 
     if let Some(path) = caps.as_deref()
         && let Some(on) = read_led(path)
     {
-        let _ = sender.send_blocking(AppMessage::Event(OsdEvent::CapsLock { on }));
+        let _ = sender.send_blocking(AppMessage::State(OsdEvent::CapsLock { on }));
     }
     if let Some(path) = num.as_deref()
         && let Some(on) = read_led(path)
     {
-        let _ = sender.send_blocking(AppMessage::Event(OsdEvent::NumLock { on }));
+        let _ = sender.send_blocking(AppMessage::State(OsdEvent::NumLock { on }));
     }
 
     let mut last_caps = caps.as_deref().and_then(read_led);

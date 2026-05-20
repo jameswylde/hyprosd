@@ -48,6 +48,34 @@ Restart Hyprland, reload your config, or start the daemon manually once:
 hyprosd daemon
 ```
 
+Then bind your media keys to update the system value and ask the running daemon
+to show the current OSD:
+
+```ini
+bind = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && hyprosd show volume
+bind = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && hyprosd show volume
+bind = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && hyprosd show volume
+
+bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10%- && hyprosd show brightness
+bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10% && hyprosd show brightness
+```
+
+For AUR installs, `hyprosd` is installed to `/usr/bin/hyprosd`, so using
+`hyprosd show ...` is preferred. For manual installs, use `hyprosd show ...` if
+`~/.local/bin` is in your session `PATH`; otherwise use the full path:
+
+```ini
+bind = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && ~/.local/bin/hyprosd show volume
+```
+
+If you enable Hyprland blur for the OSD layer, also ignore fully transparent
+pixels so the rounded corners do not reveal the rectangular layer surface:
+
+```ini
+layerrule = blur on, match:namespace hyprosd
+layerrule = ignorealpha 0.1, match:namespace hyprosd
+```
+
 
 ## Uninstall
 

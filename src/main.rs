@@ -38,6 +38,7 @@ pub enum OsdKind {
 #[derive(Debug, Clone)]
 pub enum AppMessage {
     Event(OsdEvent),
+    State(OsdEvent),
     Command(OsdCommand),
 }
 
@@ -182,6 +183,10 @@ fn run_daemon() -> anyhow::Result<()> {
             let mut state = state_ref.borrow_mut();
             let event = match message {
                 AppMessage::Event(event) => event,
+                AppMessage::State(event) => {
+                    update_state(&mut state, &event);
+                    continue;
+                }
                 AppMessage::Command(command) => match command_to_event(&mut state, command) {
                     Some(event) => event,
                     None => continue,

@@ -12,7 +12,7 @@ fn watch_volume(sender: async_channel::Sender<AppMessage>) {
     let mut last = query::query_volume();
 
     if let Some((level, muted)) = last {
-        let _ = sender.send_blocking(AppMessage::Event(OsdEvent::Volume { level, muted }));
+        let _ = sender.send_blocking(AppMessage::State(OsdEvent::Volume { level, muted }));
     } else {
         eprintln!("hyprosd: unable to read volume level");
     }
