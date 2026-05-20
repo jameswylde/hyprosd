@@ -1,5 +1,7 @@
 # hyprosd
 
+![hyprosd screenshot](assets/example.png)
+
 Simple OSD for hyprland/Wayland, featuring volume, brightness and lock-states.
 
 
@@ -24,9 +26,6 @@ cd hyprosd
 ./scripts/install.sh
 ```
 
-This installs `hyprosd` to `~/.local/bin/hyprosd` and a convenience launcher to
-`~/.local/bin/hyprosd-daemon`.
-
 ##  Setup
 
 Start the hyprosd daemon from `hyprland.conf`:
@@ -48,8 +47,7 @@ Restart Hyprland, reload your config, or start the daemon manually once:
 hyprosd daemon
 ```
 
-Then bind your media keys to update the system value and ask the running daemon
-to show the current OSD:
+Bind your media keys for volume display:
 
 ```ini
 bind = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && hyprosd show volume
@@ -68,12 +66,11 @@ For AUR installs, `hyprosd` is installed to `/usr/bin/hyprosd`, so using
 bind = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && ~/.local/bin/hyprosd show volume
 ```
 
-If you enable Hyprland blur for the OSD layer, also ignore fully transparent
-pixels so the rounded corners do not reveal the rectangular layer surface:
+If you enable Hyprland blur for the OSD layer, add the below to your hyprland config so the rounded corners do not reveal the squared layer surface:
 
 ```ini
 layerrule = blur on, match:namespace hyprosd
-layerrule = ignorealpha 0.1, match:namespace hyprosd
+layerrule = ignore_alpha 0.1, match:namespace hyprosd
 ```
 
 
