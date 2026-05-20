@@ -4,6 +4,7 @@
 
 Simple OSD for hyprland/Wayland, featuring volume, brightness and lock-states.
 
+[View on AUR](https://aur.archlinux.org/packages/hyprosd-git) 
 
 ## Install
 
