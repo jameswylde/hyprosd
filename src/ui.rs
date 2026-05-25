@@ -69,10 +69,8 @@ impl OsdUi {
         drawing.set_css_classes(&["hyprosd-transparent"]);
 
         let draw_state = Rc::new(RefCell::new(DrawState::new()));
-        let draw_state_ref = draw_state.clone();
         let config_ref = config.clone();
         drawing.set_draw_func(move |_, cr, width, height| {
-            let state = draw_state_ref.borrow();
             // clear the whole drawing area first so only our rounded shape remains
             cr.set_operator(gtk4::cairo::Operator::Source);
             cr.set_source_rgba(0.0, 0.0, 0.0, 0.0);
@@ -82,19 +80,10 @@ impl OsdUi {
             let (bg_r, bg_g, bg_b, bg_a) =
                 parse_rgba(&config_ref.theme.background).unwrap_or((0.17, 0.17, 0.17, 0.94));
             let radius = config_ref.theme.corner_radius as f64;
-            match state.mode {
-                DrawMode::Lock => {
-                    rounded_rect(cr, 0.0, 0.0, width as f64, height as f64, radius);
-                    cr.set_source_rgba(bg_r, bg_g, bg_b, bg_a);
-                    let _ = cr.fill();
-                }
-                DrawMode::Value { level } => {
-                    rounded_rect(cr, 0.0, 0.0, width as f64, height as f64, radius);
-                    cr.set_source_rgba(bg_r, bg_g, bg_b, bg_a);
-                    let _ = cr.fill();
-                    let _ = level;
-                }
-            }
+            rounded_rect(cr, 0.0, 0.0, width as f64, height as f64, radius);
+            cr.set_source_rgba(bg_r, bg_g, bg_b, bg_a);
+            let _ = cr.fill();
+
             let (fg_r, fg_g, fg_b, _) =
                 parse_rgba(&config_ref.theme.foreground).unwrap_or((1.0, 1.0, 1.0, 1.0));
             cr.set_source_rgba(fg_r, fg_g, fg_b, 1.0);
@@ -200,8 +189,7 @@ impl OsdUi {
                     self.icon.remove_css_class("hyprosd-muted");
                 }
                 self.draw_state.borrow_mut().set_level(level);
-                self.bar_area.queue_draw();
-                self.drawing.queue_draw();
+                self.queue_redraw();
             }
             OsdEvent::Brightness { level } => {
                 self.set_layout(LayoutKind::Value);
@@ -209,8 +197,7 @@ impl OsdUi {
                     .set_from_icon_name(Some("display-brightness-symbolic"));
                 self.icon.remove_css_class("hyprosd-muted");
                 self.draw_state.borrow_mut().set_level(level);
-                self.bar_area.queue_draw();
-                self.drawing.queue_draw();
+                self.queue_redraw();
             }
             OsdEvent::CapsLock { on } => {
                 self.set_layout(LayoutKind::Lock);
@@ -221,8 +208,7 @@ impl OsdUi {
                     self.icon.add_css_class("hyprosd-muted");
                 }
                 self.draw_state.borrow_mut().set_lock();
-                self.bar_area.queue_draw();
-                self.drawing.queue_draw();
+                self.queue_redraw();
             }
             OsdEvent::NumLock { on } => {
                 self.set_layout(LayoutKind::Lock);
@@ -234,8 +220,7 @@ impl OsdUi {
                     self.icon.add_css_class("hyprosd-muted");
                 }
                 self.draw_state.borrow_mut().set_lock();
-                self.bar_area.queue_draw();
-                self.drawing.queue_draw();
+                self.queue_redraw();
             }
         }
 
@@ -284,6 +269,11 @@ impl OsdUi {
                 self.window.set_margin(layer_shell::Edge::Left, margin_left);
             }
         }
+    }
+
+    fn queue_redraw(&self) {
+        self.bar_area.queue_draw();
+        self.drawing.queue_draw();
     }
 }
 

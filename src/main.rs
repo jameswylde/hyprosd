@@ -2,6 +2,7 @@ mod backends;
 mod config;
 mod ipc;
 mod query;
+mod sysfs;
 mod ui;
 
 use anyhow::Context;

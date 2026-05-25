@@ -25,9 +25,6 @@ pub struct OsdConfig {
 pub struct ThemeConfig {
     pub background: String,
     pub foreground: String,
-    pub accent: String,
-    pub font_family: String,
-    pub font_size: i32,
     pub corner_radius: i32,
     pub padding: i32,
     pub icon_size: i32,
@@ -35,8 +32,8 @@ pub struct ThemeConfig {
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct BackendConfig {
-    #[serde(default = "default_brightness_path")]
-    pub brightness_path: Option<PathBuf>,
+    #[serde(default = "default_backlight_device_path")]
+    pub backlight_device_path: Option<PathBuf>,
 }
 
 impl Default for Config {
@@ -53,15 +50,12 @@ impl Default for Config {
             theme: ThemeConfig {
                 background: "#181818cc".to_string(),
                 foreground: "#ffffff".to_string(),
-                accent: "#88c0ff".to_string(),
-                font_family: "Google Sans, sans-serif".to_string(),
-                font_size: 17,
                 corner_radius: 20,
                 padding: 18,
                 icon_size: 26,
             },
             backend: BackendConfig {
-                brightness_path: None,
+                backlight_device_path: None,
             },
         }
     }
@@ -74,14 +68,14 @@ impl Config {
     }
 }
 
-fn default_brightness_path() -> Option<PathBuf> {
+fn default_backlight_device_path() -> Option<PathBuf> {
     None
 }
 
 fn default_lock_size() -> i32 {
-    56
+    58
 }
 
 fn default_bar_height() -> i32 {
-    6
+    1
 }

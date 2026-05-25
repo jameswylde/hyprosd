@@ -9,7 +9,7 @@ arch=('x86_64')
 url='https://github.com/jameswylde/hyprosd'
 license=('MIT')
 depends=('gtk4' 'gtk4-layer-shell')
-makedepends=('cargo' 'clang' 'git' 'pkgconf')
+makedepends=('cargo' 'git' 'pkgconf')
 optdepends=(
   'wireplumber: volume querying via wpctl'
   'pulseaudio-utils: fallback volume querying via pactl'
