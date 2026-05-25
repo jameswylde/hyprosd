@@ -2,7 +2,7 @@
 
 ![hyprosd screenshot](assets/example.png)
 
-Simple OSD for hyprland/Wayland, featuring volume, brightness and lock-states.
+Simple Hyprland OSD for volume, brightness, Caps Lock, and Num Lock.
 
 [View on AUR](https://aur.archlinux.org/packages/hyprosd-git)
 
